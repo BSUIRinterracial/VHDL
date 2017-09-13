@@ -21,6 +21,8 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -49,26 +51,10 @@ begin
     process
     begin
     
-        nI <= "111111111"; 
-        wait for 1 ns; 
-        nI <= "0--------"; 
-        wait for 1 ns; 
-        nI <= "10-------"; 
-        wait for 1 ns; 
-        nI <= "110------"; 
-        wait for 1 ns; 
-        nI <= "1110-----"; 
-        wait for 1 ns; 
-        nI <= "11110----"; 
-        wait for 1 ns; 
-        nI <= "111110---"; 
-        wait for 1 ns; 
-        nI <= "1111110--"; 
-        wait for 1 ns; 
-        nI <= "11111110-"; 
-        wait for 1 ns; 
-        nI <= "111111110"; 
-        wait for 1 ns;
+        for I in 0 to 512 loop
+            nI <= std_logic_vector(to_unsigned(I, nI'length));
+            wait for 1 ns;
+        end loop;  
         
     end process;
 
