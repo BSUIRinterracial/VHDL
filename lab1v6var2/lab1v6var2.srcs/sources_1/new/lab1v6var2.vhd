@@ -45,16 +45,16 @@ main_logic: process(nI)
     
      begin
         case conv_integer(unsigned(nI)) is 
-        when 512 => nY <= "1111"; 
+        when 511 => nY <= "1111"; 
         when 0 to 255 => nY <= "0110"; 
         when 256 to 383 => nY <= "0111"; 
         when 384 to 447 => nY <= "1000"; 
         when 448 to 479 => nY <= "1001"; 
         when 480 to 495 => nY <= "1010"; 
         when 496 to 503 => nY <= "1011"; 
-        when 504 to 507 => nY <= "0011"; 
-        when 508 to 510 => nY <= "1011"; 
-        when 511 => nY <= "0111"; 
+        when 504 to 507 => nY <= "1100"; 
+        when 508 to 509 => nY <= "1101"; 
+        when 510 => nY <= "1110"; 
         when others => nY <= "0000"; 
         end case; 
     end process;
