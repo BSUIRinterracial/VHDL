@@ -41,7 +41,8 @@ entity Register_Cell is
            iQleft : in STD_LOGIC;
            iQright : in STD_LOGIC;
            OE12 : in STD_LOGIC;
-           oQcurr : inout STD_LOGIC );
+           oQcurr : inout STD_LOGIC; 
+           oQ: out STD_LOGIC );
 end Register_Cell;
 
 architecture Behavioral of Register_Cell is
@@ -63,22 +64,18 @@ begin
         or (S0 and S1 and oQcurr)
         or (nS0 and nS1 and Q);
 
+    oQ <= Q;
+    
     DTrig: D_Trigger port map(D, CLK, nCLR, Q);
     
-    calc_d_trigger: process(CLK, OE12)
-              
---    variable ands: std_logic_vector(3 downto 0);            
+    calc_d_trigger: process(Q, OE12)
+                    
     begin
-        
---        ands(0) := S0 and nS1 and iQleft;
---        ands(1) := nS0 and S1 and iQright;
---        ands(2) := S0 and S1 and oQcurr;
---        ands(3) := nS0 and nS1 and Q;
-        
---        D <= ands(0) or ands(1) or ands(2) or ands(3);
-        
+               
         if OE12 = '1' then
-             oQcurr <= Q when not(nCLR = 1);
+            oQcurr <= Q;
+        else
+            oQcurr <= 'Z';
         end if;
             
     end process;    

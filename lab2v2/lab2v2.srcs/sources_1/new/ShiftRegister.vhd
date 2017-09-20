@@ -39,8 +39,8 @@ entity ShiftRegister is
            SL : in STD_LOGIC;
            SR : in STD_LOGIC;
            ioQ_ALL : inout STD_LOGIC_VECTOR (7 downto 0);
-           Qa : in STD_LOGIC;
-           Qh : in STD_LOGIC);
+           Qa : out STD_LOGIC;
+           Qh : out STD_LOGIC );
 end ShiftRegister;
 
 architecture Behavioral of ShiftRegister is
@@ -55,23 +55,43 @@ component Register_Cell is
            iQleft : in STD_LOGIC;
            iQright : in STD_LOGIC;
            OE12 : in STD_LOGIC;
-           oQcurr : inout STD_LOGIC );
+           oQcurr : inout STD_LOGIC; 
+           oQ : out STD_LOGIC );
 end component;
      
-signal S : STD_LOGIC_VECTOR(1 downto 0);
-signal CLK : STD_LOGIC;
-signal nCLR : STD_LOGIC;
-signal Q_ALL : STD_LOGIC_VECTOR(7 downto 0);
-signal OE12 : STD_LOGIC_VECTOR(1 downto 0);
-signal Qa : STD_LOGIC;
-signal Qh : STD_LOGIC;
-
-TYPE Register_Cell_Array IS ARRAY (0 TO 7) OF Register_Cell;
--- да, это жеска
+--signal S : STD_LOGIC_VECTOR(1 downto 0);
+--signal CLK : STD_LOGIC;
+--signal nCLR : STD_LOGIC;
+--signal ioQ_ALLbuf : STD_LOGIC_VECTOR(7 downto 0);
+--signal OE12 : STD_LOGIC_VECTOR(1 downto 0);
+--signal Qa : STD_LOGIC;
+--signal Qh : STD_LOGIC;
+signal Qbuf : STD_LOGIC_VECTOR(5 downto 0);
 
 begin
-
-    mapping: Register_Cell_Array(0) port map(S(0), not S(0), S(1), not S(1), CLK, nCLR, 
-            Q_ALL(7), Q_ALL(1), OE12(1), Q_ALL(0));
-
+            
+    reg_cell0: Register_Cell port map(S(0), not S(0), S(1), not S(1), CLK, not nCLR, SR, 
+            ioQ_ALL(1), (not nOE(0)) and (not nOE(1) and (not (S(0) and S(1)))), ioQ_ALL(0), Qa);
+            
+    reg_cell1: Register_Cell port map(S(0), not S(0), S(1), not S(1), CLK, not nCLR, ioQ_ALL(0), 
+            ioQ_ALL(2), (not nOE(0)) and (not nOE(1) and (not (S(0) and S(1)))), ioQ_ALL(1), Qbuf(0));
+            
+    reg_cell2: Register_Cell port map(S(0), not S(0), S(1), not S(1), CLK, not nCLR, ioQ_ALL(1), 
+            ioQ_ALL(3), (not nOE(0)) and (not nOE(1) and (not (S(0) and S(1)))), ioQ_ALL(2), Qbuf(1));
+            
+    reg_cell3: Register_Cell port map(S(0), not S(0), S(1), not S(1), CLK, not nCLR, ioQ_ALL(2), 
+            ioQ_ALL(4), (not nOE(0)) and (not nOE(1) and (not (S(0) and S(1)))), ioQ_ALL(3), Qbuf(2));
+            
+    reg_cell4: Register_Cell port map(S(0), not S(0), S(1), not S(1), CLK, not nCLR, ioQ_ALL(3), 
+            ioQ_ALL(5), (not nOE(0)) and (not nOE(1) and (not (S(0) and S(1)))), ioQ_ALL(4), Qbuf(3));
+            
+    reg_cell5: Register_Cell port map(S(0), not S(0), S(1), not S(1), CLK, not nCLR, ioQ_ALL(4), 
+            ioQ_ALL(6), (not nOE(0)) and (not nOE(1) and (not (S(0) and S(1)))), ioQ_ALL(5), Qbuf(4));
+            
+    reg_cell6: Register_Cell port map(S(0), not S(0), S(1), not S(1), CLK, not nCLR, ioQ_ALL(5), 
+            ioQ_ALL(7), (not nOE(0)) and (not nOE(1) and (not (S(0) and S(1)))), ioQ_ALL(6), Qbuf(5));
+            
+    reg_cell7: Register_Cell port map(S(0), not S(0), S(1), not S(1), CLK, not nCLR, ioQ_ALL(6), 
+            SL, (not nOE(0)) and (not nOE(1) and (not (S(0) and S(1)))), ioQ_ALL(7), Qh);
+                                         
 end Behavioral;

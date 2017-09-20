@@ -35,7 +35,7 @@ entity D_Trigger is
     Port ( D : in STD_LOGIC;
            C : in STD_LOGIC;
            R : in STD_LOGIC;
-           Q : out STD_LOGIC);
+           Q : out STD_LOGIC := '0');
 end D_Trigger;
 
 architecture Behavioral of D_Trigger is
@@ -44,7 +44,7 @@ begin
     
     process (C, R)
     begin
-        Q <= '0';
+    
         if R = '0' then
             Q <= '0';
         elsif rising_edge(C) then

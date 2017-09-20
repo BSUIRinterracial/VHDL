@@ -74,6 +74,10 @@ begin
         C <= '1';
         wait for 1 ns;
         D <= '0';
+        C <= '0';
+        wait for 1 ns;
+        C <= '1';
+        wait for 1 ns;
               
     end process;
 
