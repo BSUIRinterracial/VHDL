@@ -39,8 +39,8 @@ entity ShiftRegister is
            SL : in STD_LOGIC;
            SR : in STD_LOGIC;
            ioQ_ALL : inout STD_LOGIC_VECTOR (7 downto 0);
-           Qa : out STD_LOGIC;
-           Qh : out STD_LOGIC );
+           Qa : out STD_LOGIC := '0';
+           Qh : out STD_LOGIC := '0' );
 end ShiftRegister;
 
 architecture Behavioral of ShiftRegister is
@@ -70,7 +70,7 @@ signal Qbuf : STD_LOGIC_VECTOR(5 downto 0);
 
 begin
             
-    reg_cell0: Register_Cell port map(S(0), not S(0), S(1), not S(1), CLK, not nCLR, SR, 
+    reg_cell0: Register_Cell port map(S(0), not S(0), S(1), not S(1), CLK, not nCLR, SL, 
             ioQ_ALL(1), (not nOE(0)) and (not nOE(1) and (not (S(0) and S(1)))), ioQ_ALL(0), Qa);
             
     reg_cell1: Register_Cell port map(S(0), not S(0), S(1), not S(1), CLK, not nCLR, ioQ_ALL(0), 
@@ -92,6 +92,6 @@ begin
             ioQ_ALL(7), (not nOE(0)) and (not nOE(1) and (not (S(0) and S(1)))), ioQ_ALL(6), Qbuf(5));
             
     reg_cell7: Register_Cell port map(S(0), not S(0), S(1), not S(1), CLK, not nCLR, ioQ_ALL(6), 
-            SL, (not nOE(0)) and (not nOE(1) and (not (S(0) and S(1)))), ioQ_ALL(7), Qh);
+            SR, (not nOE(0)) and (not nOE(1) and (not (S(0) and S(1)))), ioQ_ALL(7), Qh);
                                          
 end Behavioral;
