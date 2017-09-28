@@ -60,7 +60,7 @@ signal SL : STD_LOGIC;
 signal ioQ_ALL : STD_LOGIC_VECTOR (7 downto 0);
 signal Qa : STD_LOGIC;
 signal Qh : STD_LOGIC;
-signal shit: STD_LOGIC_VECTOR (3 downto 0);
+signal buffer_sig: STD_LOGIC_VECTOR (3 downto 0) := "0000";
 
 begin
 
@@ -91,21 +91,21 @@ begin
         ioQ_ALL <= "00110001";
 --        for i in 0 to 255 loop
             for i2 in 0 to 15 loop
-                shit <= std_logic_vector(to_unsigned(i2, shit'length));
+                buffer_sig <= std_logic_vector(to_unsigned(i2, buffer_sig'length));
                 wait for 1 ns;                
-                SL <= shit(0);
-                SR <= shit(1);
-                nOE(0) <= shit(2);
-                nOE(1) <= shit(3);
+                SL <= buffer_sig(0);
+                SR <= buffer_sig(1);
+                nOE(0) <= buffer_sig(2);
+                nOE(1) <= buffer_sig(3);
                 S(0) <= '1';
                 S(1) <= '1';
 --                ioQ_ALL <= std_logic_vector(to_unsigned(I, ioQ_ALL'length));
                 
                 ioQ_ALL <= "00110001";
-                ioQ_ALL(0) <= shit(0);
-                ioQ_ALL(1) <= shit(0);
-                ioQ_ALL(2) <= shit(0);
-                ioQ_ALL(3) <= shit(0);                                                         
+                ioQ_ALL(0) <= buffer_sig(0);
+                ioQ_ALL(1) <= buffer_sig(0);
+                ioQ_ALL(2) <= buffer_sig(0);
+                ioQ_ALL(3) <= buffer_sig(0);                                                         
                               
                                               
                 
@@ -124,18 +124,18 @@ begin
             end loop;
             
             
-            shit <= "0000";
+            buffer_sig <= "0000";
             wait for 10 ns;    
             -- loop for SHIFT MODES
             for i in 0 to 3 loop
             
-                shit <= std_logic_vector(to_unsigned(i, shit'length));
+                buffer_sig <= std_logic_vector(to_unsigned(i, buffer_sig'length));
                 
                 S(0) <= '0';
                 S(1) <= '1';
                 
-                SL <= shit(0);
-                SR <= shit(1); 
+                SL <= buffer_sig(0);
+                SR <= buffer_sig(1); 
                 
                 wait for 1 ns;
                 CLK <= not CLK;    
@@ -172,30 +172,30 @@ begin
         -- loop for HOLD mode part 1
         S <= "00";
         nOE <= "00";
-        shit <= "0000";
+        buffer_sig <= "0000";
         wait for 10 ns;
         for i in 0 to 7 loop
-            shit <= std_logic_vector(to_unsigned(i, shit'length));
-            CLK <= shit(0);
-            SL <= shit(1);
-            SR <= shit(2);
+            buffer_sig <= std_logic_vector(to_unsigned(i, buffer_sig'length));
+            CLK <= buffer_sig(0);
+            SL <= buffer_sig(1);
+            SR <= buffer_sig(2);
             wait for 1 ns;
         end loop;
         
         CLK <= '0';
-        shit <= "0000";
+        buffer_sig <= "0000";
         for i in 0 to 15 loop
-            S(0) <= shit(0);
-            S(1) <= shit(1);
-            SL <= shit(2);
-            SR <= shit(3);
+            S(0) <= buffer_sig(0);
+            S(1) <= buffer_sig(1);
+            SL <= buffer_sig(2);
+            SR <= buffer_sig(3);
             wait for 1 ns;
         end loop;
         
         wait for 10 ns;
                 
         --nCLR <= '0';
-        shit <= "0000";
+        buffer_sig <= "0000";
         -- check load + clear
         for i in 0 to 15 loop
                 
@@ -207,12 +207,12 @@ begin
             wait for 1 ns;
             CLK <= not CLK; 
             ioQ_ALL <= "ZZZZZZZZ"; 
-            shit <= std_logic_vector(to_unsigned(i, shit'length));
+            buffer_sig <= std_logic_vector(to_unsigned(i, buffer_sig'length));
             
-            nOE(0) <= shit(0);
-            nOE(1) <= shit(1);
-            SL <= shit(2);
-            SR <= shit(3);
+            nOE(0) <= buffer_sig(0);
+            nOE(1) <= buffer_sig(1);
+            SL <= buffer_sig(2);
+            SR <= buffer_sig(3);
             
             nCLR <= '1';         
             wait for 1 ns;
@@ -226,18 +226,18 @@ begin
         
         wait for 10 ns;
         
-        shit <= "0000";
+        buffer_sig <= "0000";
         nCLR <= '1';   
         -- check shift + clear
         for i in 0 to 3 loop
             
-            shit <= std_logic_vector(to_unsigned(i, shit'length));
+            buffer_sig <= std_logic_vector(to_unsigned(i, buffer_sig'length));
                         
             S(0) <= '0';
             S(1) <= '1';
             
-            SL <= shit(0);
-            SR <= shit(1); 
+            SL <= buffer_sig(0);
+            SR <= buffer_sig(1); 
             
             wait for 1 ns;
             CLK <= not CLK;    

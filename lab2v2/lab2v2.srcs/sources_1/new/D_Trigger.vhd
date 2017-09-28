@@ -33,22 +33,29 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity D_Trigger is
     Port ( D : in STD_LOGIC;
+           notS : in STD_LOGIC;
            C : in STD_LOGIC;
-           R : in STD_LOGIC;
-           Q : out STD_LOGIC := '0');
+           notR : in STD_LOGIC;
+           Q : out STD_LOGIC := '0';
+           notQ : out STD_LOGIC := '1');
 end D_Trigger;
 
 architecture Behavioral of D_Trigger is
 
 begin
     
-    process (C, R)
-    begin
-    
-        if R = '0' then
+    process (C, notS, notR)
+    begin    
+        
+        if notR = '0' then
             Q <= '0';
+            notQ <= '1';
+        elsif notS = '0' then
+            Q <= '1';
+            notQ <= '0';
         elsif rising_edge(C) then
             Q <= D;
+            notQ <= not D;
         end if;
         
     end process;

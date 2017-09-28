@@ -50,13 +50,16 @@ architecture Behavioral of Register_Cell is
 
 component D_Trigger is 
          Port ( D : in STD_LOGIC;
-                C : in STD_LOGIC;
-                R : in STD_LOGIC;
-                Q : out STD_LOGIC );
+               notS : in STD_LOGIC;
+               C : in STD_LOGIC;
+               notR : in STD_LOGIC;
+               Q : out STD_LOGIC;
+               notQ : out STD_LOGIC);
 end component;
      
 signal D: STD_LOGIC;
 signal Q: STD_LOGIC;
+signal notQ: STD_LOGIC;
 
 begin
     
@@ -67,7 +70,7 @@ begin
 
     oQ <= Q;
     
-    DTrig: D_Trigger port map(D, CLK, nCLR, Q);
+    DTrig: D_Trigger port map(D, '1', CLK, nCLR, Q, notQ);
     
     calc_d_trigger: process(Q, OE12)
                     
