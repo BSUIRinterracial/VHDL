@@ -81,6 +81,8 @@ begin
                 write (out_row, ok);
             else  
                 write (out_row, fail);
+                report "Expected " & integer'image(in_eth_int)
+                    & ", but found " & integer'image(to_integer(unsigned(outY))) severity error;
             end if;
             
             -- write to the out file
